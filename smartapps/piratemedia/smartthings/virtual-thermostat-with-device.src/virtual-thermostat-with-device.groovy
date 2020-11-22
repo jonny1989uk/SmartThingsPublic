@@ -16,11 +16,15 @@ preferences {
 	section("Select the heater outlet(s)"){
 		input "outlets", "capability.switch", title: "Outlets", multiple: true
 	}
-	section("Only heat when contact(s) are closed (optional, leave blank to not require contact sensor)..."){
+	section("Only heat when contact(s) are closed"){
 		input "motion", "capability.contactSensor", title: "Contact", required: false, multiple: true
 	}
-    
-	section("Never go below this temperature: (optional)"){
+    section("Motion"){
+    	paragraph "Only heat when motion is detected"
+		input "motionSensors", "capability.motionSensor", title: "Contact", required: false, multiple: true
+	}
+	section("Minimum Temp: (optional)"){
+    	paragraph "Never allow the temperature to fall below this number of degrees"
 		input "emergencySetpoint", "decimal", title: "Emergency Temp", required: false
 	}
 	section("Temperature Threshold") {
@@ -28,6 +32,7 @@ preferences {
 		input "threshold", "decimal", title: "Temperature Threshold", required: false, defaultValue: 1.0
 	}
     section("Maximum Price (p/kWh)") {
+    	paragraph "The heat will not be turned on unless electrcity is below this price"
 		input "maxprice", "text", title: "Pence", required: false, defaultValue: 99
 	}
 }
