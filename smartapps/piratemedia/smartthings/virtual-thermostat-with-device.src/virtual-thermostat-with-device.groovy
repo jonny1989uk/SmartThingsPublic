@@ -10,20 +10,25 @@ definition(
 )
 
 preferences {
-	section("Choose a temperature sensor(s)... (If multiple sensors are selected, the average value will be used)"){
+	section("Choose temperature sensor(s)"){
 		input "sensors", "capability.temperatureMeasurement", title: "Sensor", multiple: true
 	}
-	section("Select the heater outlet(s)... "){
+	section("Select the heater outlet(s)"){
 		input "outlets", "capability.switch", title: "Outlets", multiple: true
 	}
-	section("Only heat when contact(s) arent open (optional, leave blank to not require contact sensor)..."){
+	section("Only heat when contact(s) are closed (optional, leave blank to not require contact sensor)..."){
 		input "motion", "capability.contactSensor", title: "Contact", required: false, multiple: true
 	}
+    
 	section("Never go below this temperature: (optional)"){
 		input "emergencySetpoint", "decimal", title: "Emergency Temp", required: false
 	}
-	section("Temperature Threshold (Don't allow heating to go above or bellow this amount from set temperature)") {
+	section("Temperature Threshold") {
+    	paragraph "Don't allow heating to go above or below this amount from set temperature"
 		input "threshold", "decimal", title: "Temperature Threshold", required: false, defaultValue: 1.0
+	}
+    section("Maximum Price (p/kWh)") {
+		input "maxprice", "text", title: "Pence", required: false, defaultValue: 99
 	}
 }
 
@@ -48,7 +53,7 @@ def createDevice() {
 }
 
 def shouldHeatingBeOn(thermostat) {    
-    //if temperature is bellow emergency setpoint
+    //if temperature is below emergency setpoint
     if(emergencySetpoint && emergencySetpoint > getAverageTemperature()) {
     	return true;
     }
